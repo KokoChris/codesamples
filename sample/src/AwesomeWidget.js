@@ -11,9 +11,11 @@ export default class AwesomeWidget extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener("resize", () => {
-      this.setState({ hasResized: true });
-    });
+    if (this.props.resize) {
+      window.addEventListener("resize", () => {
+        this.setState({ hasResized: true });
+      });
+    }
   }
 
   handleClick() {
