@@ -267,8 +267,11 @@ export default App.ViewController.extend({
     const qualifiedViewHeight = this._adjustListHeightForOptionalElements(height, this.stage.getQualifiedList());
     const disqualifiedViewHeight = this._adjustListHeightForOptionalElements(height, this.stage.getDisqualifiedList());
 
-    this.qualifiedView.ui.body.height(qualifiedViewHeight);
-    this.disqualifiedView.ui.body.height(disqualifiedViewHeight);
+    const qualifiedBody = this.qualifiedView.ui.body;
+    const disqualifiedBody = this.disqualifiedView.ui.body;
+
+    qualifiedBody?.selector ? qualifiedBody.height(qualifiedViewHeight) : $(`${qualifiedBody}`).height(qualifiedViewHeight);
+    disqualifiedBody?.selector ? disqualifiedBody.height(disqualifiedViewHeight) : $(`${disqualifiedBody}`).height(disqualifiedViewHeight);
   },
 
   _adjustListHeightForOptionalElements(height, list) {
@@ -283,7 +286,7 @@ export default App.ViewController.extend({
         .canPerformBulk() &&
       list.length > 0
     ) {
-      height = height - this.view.ui.header.outerHeight();
+      height = height - (this.view.ui.header?.outerHeight?.() || 0);
     }
 
     if (list.length === 0) {
